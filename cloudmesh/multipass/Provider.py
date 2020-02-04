@@ -192,10 +192,9 @@ class Provider(ComputeNodeABC):
         :param name: the unique node name
         :return:  The dict representing the node
         """
-        Shell.run(f"multipass start {name}")
-        result = Shell.run(f"multipass info {name} --format=json")
-        result = eval(result)['info']
-        return result
+        banner(f"start {name}")
+        os.system(f"multipass start {name}")
+        print('\n')
 
     # IMPLEMENT
     def delete(self, name="cloudmesh", purge=True):
