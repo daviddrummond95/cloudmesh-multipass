@@ -197,7 +197,7 @@ class Provider(ComputeNodeABC):
 
     # IMPLEMENT
     def delete(self, name="cloudmesh", purge=True):
-        banner(f"deleste {name}")
+        banner(f"delete {name}")
         # terminate and purge
         os.system(f"multipass delete {name}")
         # Once purged it cannot be recovered.
@@ -249,7 +249,9 @@ class Provider(ComputeNodeABC):
         :param name:
         :return: The dict representing the node including updated status
         """
-        raise NotImplementedError
+        banner(f"info {name}")
+        os.system(f"multipass info --format yaml {name}")
+        print('\n')
 
     # IMPLEMENT
     def suspend(self, name=None):
@@ -259,7 +261,11 @@ class Provider(ComputeNodeABC):
         :param name: the name of the node
         :return: The dict representing the node
         """
-        raise NotImplementedError
+        banner(f"suspend {name}")
+        os.system(f"multipass suspend {name}")
+        result = self._vm()
+        return self.update_dict(result, kind="vm")
+        # raise NotImplementedError
 
     # IMPLEMENT
     def resume(self, name=None):
@@ -269,7 +275,11 @@ class Provider(ComputeNodeABC):
         :param name: the name of the node
         :return: the dict of the node
         """
-        raise NotImplementedError
+        banner(f"resume {name}")
+        os.system(f"resume {name}")
+        result = self._vm()
+        return self.update_dict(result, kind="vm")
+        # raise NotImplementedError
 
     # IMPLEMENT
     def destroy(self, name=None):
